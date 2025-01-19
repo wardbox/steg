@@ -1,20 +1,58 @@
 .login input {
-  color: #000;
+  color: hsl(var(--foreground));
   border-radius: var(--radius);
+  @apply rounded-none border-2 bg-background;
 }
 
 .login svg {
-  fill: #000;
+  color: hsl(var(--foreground));
 }
 
 .login button {
-  border: none;
+  @apply rounded-none border-2 transition-transform hover:scale-[0.98] active:scale-[0.95];
 }
 
 .login span {
-  color: #000;
+  color: hsl(var(--foreground));
 }
 
 .login-text {
-  color: hsl(var(--foreground));
+  color: hsl(var(--muted-foreground));
+}
+
+/* Auth form layout */
+.login-container {
+  @apply flex flex-col gap-6;
+}
+
+.login-header {
+  @apply space-y-2 text-center;
+}
+
+.login-header h1 {
+  @apply text-2xl font-bold tracking-tight;
+}
+
+.login-header p {
+  @apply text-sm text-muted-foreground;
+}
+
+.login-form {
+  @apply space-y-4;
+}
+
+.login-form-group {
+  @apply space-y-2;
+}
+
+.login-form-group label {
+  @apply text-sm font-medium;
+}
+
+.login-form-footer {
+  @apply mt-4 text-center text-sm text-muted-foreground;
+}
+
+.login-form-footer a {
+  @apply underline hover:text-foreground;
 }
