@@ -46,7 +46,7 @@ wasp db migrate-dev
 wasp start
 ```
 
-Visit [steg.app](https://steg.app) to start tracking your goals.  
+Visit [getsteg.app](https://getsteg.app) to start tracking your goals.  
 <br /> ![Format & Lint pipeline status](https://github.com/wardbox/steg/actions/workflows/format.yml/badge.svg)
 
 ## Contributing
