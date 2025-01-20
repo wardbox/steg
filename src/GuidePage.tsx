@@ -707,7 +707,7 @@ const { transition } = useMotion()
                   <Lightbulb
                     size={16}
                     weight='fill'
-                    className='mr-1 inline-block text-brand-primary'
+                    className='text-brand-primary mr-1 inline-block'
                   />
                   Tip: You can create different transition presets for different
                   parts of your app in <code>motion.tsx</code>. The playground

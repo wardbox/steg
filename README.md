@@ -1,65 +1,70 @@
-# Roke
+# steg
 
-A Wasp starter with sensible defaults.
+A thoughtfully designed goal tracking system that supports daily, weekly,
+monthly, and annual goals. Focused on clean design and meaningful interactions.
 
-## What's he building in there?
+## What is steg?
 
-I built Roke because I was tired of repeating the same setup ritual for every
-new Wasp project. Instead of continuing that cycle, I created the starting point
-I always wished I had.
+steg (/steːɡ/) is a goal tracking app built for people who appreciate clean
+design and thoughtful interactions. It strips away the complexity found in most
+habit trackers to focus on what matters: your progress.
 
-This isn't just another blank slate. It's a thoughtfully crafted foundation that
-includes:
+This isn't just another cluttered productivity app. It's a carefully crafted
+tool that includes:
 
-- Preconfigured shadcn/ui components
-- Motion animation presets
-- Helper scripts for common tasks
-- Real-world examples beyond the basics
-- Best practices baked in
+### Goal Types & Tracking
+
+- **Countable Goals**: Track numerical targets with animated progress indicators
+- **Yes/No Goals**: Simple completion tracking with daily streaks
+- Support for daily habits, weekly targets, monthly milestones, and annual
+  objectives
+
+### Smart Reminders
+
+- Context-aware notifications that know when you need them:
+  - Daily goals check for today's completion
+  - Weekly goals remind you on Thursday if behind
+  - Monthly goals alert on the 25th if off track
+  - Annual goals compare to expected pace
 
 ## Philosophy
 
-While most starters give you an empty canvas, Roke provides opinionated defaults
-that reflect how modern web apps are actually built. It embraces shadcn/ui's
-principles of being "Accessible. Customizable. Open Source." and extends them to
-the entire project structure.
+While most tracking apps overwhelm you with features, steg embraces minimalism
+in both design and function. Every element serves a purpose, from the circular
+progress indicators to the mathematically spaced grid layouts.
 
-The goal isn't just to give you boilerplate - it's to provide a foundation that
-makes web development more enjoyable and accessible. Batteries included, but
-replaceable.
+The goal isn't to gamify your habits - it's to provide a calm, focused space for
+tracking what matters to you. Simple to use, but thoughtfully crafted.
 
 ## Getting Started
 
-Click "Use this template" button at the top of the repository
+Start the development server:
 
 ```bash
-# Start the development server
 wasp db start
 wasp db migrate-dev
 wasp start
 ```
 
-Visit [roke.dev](https://roke.dev) for comprehensive documentation.  
-<br /> ![Format & Lint pipeline status](https://github.com/wardbox/roke/actions/workflows/format.yml/badge.svg)  
-![Deployment pipeline status](https://github.com/wardbox/roke/actions/workflows/deploy.yml/badge.svg?branch=deploy)
+Visit [steg.app](https://steg.app) to start tracking your goals.  
+<br /> ![Format & Lint pipeline status](https://github.com/wardbox/steg/actions/workflows/format.yml/badge.svg)
 
 ## Contributing
 
 We welcome contributions! Whether it's:
 
-- 🐛 Bug fixes
-- ✨ New features
-- 📝 Documentation improvements
-- 💡 Suggestions
+- 🎯 New goal tracking features
+- 🎨 Design improvements
+- 📝 Documentation updates
+- 💡 Usability suggestions
 
 Feel free to open an issue or submit a pull request.
 
 ## Learn More
 
-- [Documentation](https://roke.dev)
-- [Wasp Documentation](https://wasp-lang.dev)
-- [shadcn/ui](https://ui.shadcn.com)
-- [Motion](https://motion.dev)
+- [Privacy Policy](https://steg.app/privacy)
+- [Terms of Service](https://steg.app/terms)
+- [Support](https://steg.app/support)
 
 ## License
 

@@ -9,19 +9,22 @@ import { Link } from 'react-router-dom'
 import './auth.css'
 
 import type { CustomizationOptions } from 'wasp/client/auth'
-import { Mountains } from '@phosphor-icons/react'
+import { Footprints } from '@phosphor-icons/react'
 
 export const authAppearance: CustomizationOptions['appearance'] = {
   colors: {
-    brand: 'hsl(var(--brand-primary))',
-    brandAccent: 'hsl(var(--brand-accent))',
-    submitButtonText: 'hsl(var(--brand-primary-foreground))',
+    brand: 'hsl(4 85% 65%)', // Primary coral
+    brandAccent: 'hsl(199 95% 74%)', // Ocean blue
+    submitButtonText: 'hsl(0 0% 100%)', // White text
   },
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className='mx-auto flex max-w-xl flex-col px-12 py-24 pt-12 font-sans animate-in fade-in sm:px-0 2xl:py-48'>
+    <div className='mx-auto flex max-w-xl flex-col items-center px-12 py-24 pt-12 font-sans animate-in fade-in sm:px-0 2xl:py-48'>
+      <div className='circle mb-8 flex h-16 w-16 items-center justify-center bg-primary text-primary-foreground'>
+        <Footprints size={32} weight='bold' />
+      </div>
       {children}
     </div>
   )
@@ -30,7 +33,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export function Login() {
   return (
     <Layout>
-      <Mountains size={100} weight='thin' />
       <div className='login'>
         <LoginForm appearance={authAppearance} />
       </div>
@@ -57,7 +59,6 @@ export function Login() {
 export function Signup() {
   return (
     <Layout>
-      <Mountains size={100} weight='thin' />
       <div className='login login-text'>
         <SignupForm appearance={authAppearance} />
       </div>
@@ -76,7 +77,6 @@ export function Signup() {
 export function EmailVerification() {
   return (
     <Layout>
-      <Mountains size={100} weight='thin' />
       <div className='login'>
         <VerifyEmailForm appearance={authAppearance} />
       </div>
@@ -94,7 +94,6 @@ export function EmailVerification() {
 export function RequestPasswordReset() {
   return (
     <Layout>
-      <Mountains size={100} weight='thin' />
       <div className='login login-text'>
         <ForgotPasswordForm appearance={authAppearance} />
       </div>
@@ -105,7 +104,6 @@ export function RequestPasswordReset() {
 export function PasswordReset() {
   return (
     <Layout>
-      <Mountains size={100} weight='thin' />
       <div className='login login-text'>
         <ResetPasswordForm appearance={authAppearance} />
       </div>
