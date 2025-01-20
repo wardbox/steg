@@ -33,12 +33,38 @@ enum GoalType {
   YES_NO
 }
 
+enum GoalFrequency {
+  ONE_TIME
+  DAILY
+  WEEKLY
+  MONTHLY
+  ANNUAL
+  CUSTOM      // For custom cycle lengths
+}
+
+enum GoalCategory {
+  HEALTH      // Green (6)
+  FINANCE     // Yellow (N)
+  CAREER      // Red (1)
+  EDUCATION   // Orange (B/D)
+  PERSONAL    // Blue (A/C/E)
+  SOCIAL      // Brown (J/Z)
+  CREATIVE    // Purple (7)
+  OTHER       // Gray (S)
+}
+
 model Goal {
   id          String         @id @default(uuid())
   name        String
   type        GoalType
+  category    GoalCategory   @default(OTHER)
+  frequency   GoalFrequency  @default(DAILY)
+  cycleLength Int?          // Number of days/weeks/months for custom frequency
+  cycleUnit   String?       // "days", "weeks", or "months" for custom frequency
+  startDate   DateTime      @default(now())  // When the goal cycles begin
   targetValue Int?          // Only used for COUNTABLE goals
-  endDate     DateTime
+  isReverse   Boolean       @default(false)  // If true, lower numbers are better
+  endDate     DateTime?     // Optional end date for goals with a specific timeframe
   user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   progress    GoalProgress[]

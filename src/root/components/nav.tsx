@@ -3,13 +3,11 @@ import { useState } from 'react'
 import { cn, usePrefetch } from '../../lib/utils'
 import { Link } from 'wasp/client/router'
 import {
-  Footprints,
-  List,
   SignIn,
   SignOut,
   User as UserIcon,
+  List,
 } from '@phosphor-icons/react'
-import { ModeToggle } from '../../client/components/mode-toggle'
 import {
   Sheet,
   SheetContent,
@@ -48,37 +46,34 @@ const Nav = React.forwardRef<HTMLElement, NavProps>(
       <nav
         ref={ref}
         className={cn(
-          'sticky top-0 z-50 w-full bg-background',
+          'sticky top-0 z-50 w-full border-b border-border bg-background',
           props.className,
         )}
         {...props}
       >
-        <div className='mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8'>
+        <div className='mx-auto flex h-16 max-w-2xl items-center justify-between px-4 sm:px-6 lg:px-8'>
           <div className='flex items-center gap-8'>
             <Link
               to='/'
               className='flex items-center'
               onMouseEnter={() => prefetch('/', undefined, { assets: true })}
             >
-              <div className='circle flex h-10 w-10 items-center justify-center bg-primary text-primary-foreground'>
-                <Footprints weight='bold' size={24} />
-              </div>
-              <span className='ml-3 text-xl font-bold'>Steg</span>
+              <span className='text-xl font-medium tracking-tight'>steg</span>
             </Link>
             <Link
               to='/dashboard'
               onMouseEnter={() => prefetch('/dashboard', undefined, { assets: true })}
+              className='text-sm text-muted-foreground hover:text-foreground'
             >
-              <span className='ml-3 text-xl font-bold'>Dashboard</span>
+              dashboard
             </Link>
           </div>
 
           <div className='flex items-center gap-4'>
-            <ModeToggle iconSize='md' />
             {/* Desktop Menu */}
             <div className='hidden items-center md:flex'>
               {userLoading ? (
-                <Skeleton className='h-10 w-10' />
+                <Skeleton className='h-8 w-8' />
               ) : (
                 <div className='flex items-center animate-in fade-in'>
                   {user ? (
@@ -91,12 +86,12 @@ const Nav = React.forwardRef<HTMLElement, NavProps>(
                         <Button
                           variant='outline'
                           size='icon'
-                          className='geometric-button'
+                          className='h-8 w-8 rounded-none'
                         >
-                          <UserIcon size={24} />
+                          <UserIcon size={16} />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align='end' className='geometric-card'>
+                      <DropdownMenuContent align='end' className='rounded-none'>
                         <Link
                           to='/profile/:id'
                           params={{ id: user.id }}
@@ -106,7 +101,7 @@ const Nav = React.forwardRef<HTMLElement, NavProps>(
                           onClick={() => setDropdownOpen(false)}
                           className='cursor-pointer'
                         >
-                          <DropdownMenuItem>Profile</DropdownMenuItem>
+                          <DropdownMenuItem>profile</DropdownMenuItem>
                         </Link>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
@@ -116,21 +111,28 @@ const Nav = React.forwardRef<HTMLElement, NavProps>(
                             logout()
                           }}
                         >
-                          <SignOut className='mr-2' size={18} />
-                          Log out
+                          <SignOut className='mr-2' size={16} />
+                          log out
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   ) : (
                     <div className='flex gap-2'>
-                      <Button asChild variant='outline' className='geometric-button'>
+                      <Button
+                        asChild
+                        variant='outline'
+                        className='h-8 rounded-none px-3 text-sm'
+                      >
                         <Link to='/login' className='flex items-center gap-2'>
-                          <SignIn size={18} />
-                          Log in
+                          <SignIn size={16} />
+                          log in
                         </Link>
                       </Button>
-                      <Button asChild className='geometric-button'>
-                        <Link to='/signup'>Sign up</Link>
+                      <Button
+                        asChild
+                        className='h-8 rounded-none bg-foreground px-3 text-sm text-background hover:bg-foreground/90'
+                      >
+                        <Link to='/signup'>sign up</Link>
                       </Button>
                     </div>
                   )}
@@ -141,35 +143,39 @@ const Nav = React.forwardRef<HTMLElement, NavProps>(
             {/* Mobile Menu */}
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild className='md:hidden'>
-                <Button variant='outline' size='icon' className='geometric-button'>
-                  <List size={24} />
+                <Button
+                  variant='outline'
+                  size='icon'
+                  className='h-8 w-8 rounded-none'
+                >
+                  <List size={16} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side='right' className='geometric-card w-[300px] p-0'>
+              <SheetContent side='right' className='rounded-none w-[300px] p-0'>
                 <SheetHeader className='p-6'>
-                  <SheetTitle className='text-2xl font-bold'>Menu</SheetTitle>
+                  <SheetTitle className='text-lg font-medium tracking-tight'>menu</SheetTitle>
                 </SheetHeader>
                 <div className='flex flex-col gap-1 p-2'>
                   {userLoading ? (
-                    <Skeleton className='h-10 w-full' />
+                    <Skeleton className='h-8 w-full' />
                   ) : user ? (
                     <>
                       <Link
                         to='/profile/:id'
                         params={{ id: user.id }}
-                        className='geometric-button w-full p-4 text-left hover:bg-muted'
+                        className='w-full p-4 text-left hover:bg-muted'
                         onClick={handleNavigation}
                       >
-                        Profile
+                        profile
                       </Link>
                       <button
                         onClick={() => {
                           logout()
                           handleNavigation()
                         }}
-                        className='geometric-button w-full p-4 text-left text-destructive hover:bg-muted'
+                        className='w-full p-4 text-left text-destructive hover:bg-muted'
                       >
-                        Log out
+                        log out
                       </button>
                     </>
                   ) : (
@@ -177,12 +183,15 @@ const Nav = React.forwardRef<HTMLElement, NavProps>(
                       <Button
                         asChild
                         variant='outline'
-                        className='geometric-button w-full'
+                        className='h-8 w-full rounded-none text-sm'
                       >
-                        <Link to='/login'>Log in</Link>
+                        <Link to='/login'>log in</Link>
                       </Button>
-                      <Button asChild className='geometric-button w-full'>
-                        <Link to='/signup'>Sign up</Link>
+                      <Button
+                        asChild
+                        className='h-8 w-full rounded-none bg-foreground text-sm text-background hover:bg-foreground/90'
+                      >
+                        <Link to='/signup'>sign up</Link>
                       </Button>
                     </div>
                   )}
