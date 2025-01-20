@@ -21,13 +21,22 @@ export function Footer() {
               </a>
             </div>
             <div className='flex gap-4'>
-              <Link to='/privacy' className='text-sm text-muted-foreground hover:text-foreground'>
+              <Link
+                to='/privacy'
+                className='text-sm text-muted-foreground hover:text-foreground'
+              >
                 privacy
               </Link>
-              <Link to='/terms' className='text-sm text-muted-foreground hover:text-foreground'>
+              <Link
+                to='/terms'
+                className='text-sm text-muted-foreground hover:text-foreground'
+              >
                 terms
               </Link>
-              <Link to='/support' className='text-sm text-muted-foreground hover:text-foreground'>
+              <Link
+                to='/support'
+                className='text-sm text-muted-foreground hover:text-foreground'
+              >
                 support
               </Link>
             </div>

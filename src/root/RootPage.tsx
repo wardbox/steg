@@ -12,7 +12,7 @@ import './Root.css'
 // Universal-style sans-serif for headers
 import '@fontsource-variable/inter'
 // Supports weights 100-900
-import '@fontsource-variable/dm-sans';
+import '@fontsource-variable/dm-sans'
 
 export default function Root() {
   const { data: user, isLoading } = useAuth()

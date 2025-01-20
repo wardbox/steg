@@ -2,12 +2,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import { cn, usePrefetch } from '../../lib/utils'
 import { Link } from 'wasp/client/router'
-import {
-  SignIn,
-  SignOut,
-  User as UserIcon,
-  List,
-} from '@phosphor-icons/react'
+import { SignIn, SignOut, User as UserIcon, List } from '@phosphor-icons/react'
 import {
   Sheet,
   SheetContent,
@@ -62,7 +57,9 @@ const Nav = React.forwardRef<HTMLElement, NavProps>(
             </Link>
             <Link
               to='/dashboard'
-              onMouseEnter={() => prefetch('/dashboard', undefined, { assets: true })}
+              onMouseEnter={() =>
+                prefetch('/dashboard', undefined, { assets: true })
+              }
               className='text-sm text-muted-foreground hover:text-foreground'
             >
               dashboard
@@ -151,9 +148,11 @@ const Nav = React.forwardRef<HTMLElement, NavProps>(
                   <List size={16} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side='right' className='rounded-none w-[300px] p-0'>
+              <SheetContent side='right' className='w-[300px] rounded-none p-0'>
                 <SheetHeader className='p-6'>
-                  <SheetTitle className='text-lg font-medium tracking-tight'>menu</SheetTitle>
+                  <SheetTitle className='text-lg font-medium tracking-tight'>
+                    menu
+                  </SheetTitle>
                 </SheetHeader>
                 <div className='flex flex-col gap-1 p-2'>
                   {userLoading ? (

@@ -1,5 +1,11 @@
 import { useMotion } from '../motion/motion-provider'
-import { fadeIn, staggerContainer, staggerItem, hoverScale, slideInUp } from '../motion/transitionPresets'
+import {
+  fadeIn,
+  staggerContainer,
+  staggerItem,
+  hoverScale,
+  slideInUp,
+} from '../motion/transitionPresets'
 import { motion } from 'motion/react'
 import { Button } from '../client/components/ui/button'
 import { Link } from 'wasp/client/router'
@@ -33,11 +39,14 @@ export default function Landing() {
               <motion.div variants={staggerItem} className='space-y-2'>
                 <div className='flex items-baseline gap-2'>
                   <span className='text-primary'>step</span>
-                  <span className='text-xs text-muted-foreground italic'>[noun]</span>
+                  <span className='text-xs italic text-muted-foreground'>
+                    [noun]
+                  </span>
                   <span>a stage in progress, development etc.</span>
                 </div>
                 <p className='pl-4 text-sm italic text-muted-foreground'>
-                  • Humanity made a big step forward with the invention of the wheel.
+                  • Humanity made a big step forward with the invention of the
+                  wheel.
                 </p>
                 <p className='pl-4 text-sm italic text-muted-foreground'>
                   • The new role was a step up from the previous position.
@@ -47,7 +56,9 @@ export default function Landing() {
               <motion.div variants={staggerItem} className='space-y-2'>
                 <div className='flex items-baseline gap-2'>
                   <span className='text-primary'>pace</span>
-                  <span className='text-xs text-muted-foreground italic'>[noun]</span>
+                  <span className='text-xs italic text-muted-foreground'>
+                    [noun]
+                  </span>
                   <span>a step</span>
                 </div>
                 <p className='pl-4 text-sm italic text-muted-foreground'>
@@ -69,7 +80,7 @@ export default function Landing() {
                 'track daily habits and routines',
                 'measure progress with numbers',
                 'get gentle reminders when needed',
-                'visualize your achievements'
+                'visualize your achievements',
               ].map((feature, i) => (
                 <motion.div
                   key={i}

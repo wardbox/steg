@@ -1,10 +1,36 @@
-import { useQuery, getGoals, createGoal, updateGoalProgress, deleteGoal } from 'wasp/client/operations'
+import {
+  useQuery,
+  getGoals,
+  createGoal,
+  updateGoalProgress,
+  deleteGoal,
+} from 'wasp/client/operations'
 import { Plus, Minus, Check, X, Trash } from '@phosphor-icons/react'
 import { Button } from '../client/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../client/components/ui/dialog'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '../client/components/ui/form'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../client/components/ui/dialog'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormDescription,
+} from '../client/components/ui/form'
 import { Input } from '../client/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../client/components/ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../client/components/ui/select'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -19,32 +45,59 @@ interface GoalWithProgress extends Goal {
   isReverse: boolean
 }
 
-const createGoalSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  type: z.enum(['COUNTABLE', 'YES_NO']),
-  category: z.enum(['HEALTH', 'FINANCE', 'CAREER', 'EDUCATION', 'PERSONAL', 'SOCIAL', 'CREATIVE', 'OTHER']),
-  frequency: z.enum(['ONE_TIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'ANNUAL', 'CUSTOM']),
-  cycleLength: z.number().nullable().refine(val => {
-    if (val === null) return true;
-    return val >= 1;
-  }, {
-    message: 'Cycle length must be at least 1',
-  }),
-  cycleUnit: z.enum(['days', 'weeks', 'months']).optional(),
-  startDate: z.string().min(1, 'Start date is required'),
-  targetValue: z.number().nullable(),
-  isReverse: z.boolean().default(false),
-  endDate: z.string().optional(),
-}).refine(data => {
-  // If frequency is CUSTOM, both cycleLength and cycleUnit are required
-  if (data.frequency === 'CUSTOM') {
-    return data.cycleLength != null && data.cycleUnit != null;
-  }
-  return true;
-}, {
-  message: 'Cycle length and unit are required for custom frequency',
-  path: ['cycleLength'] // Show error on cycleLength field
-});
+const createGoalSchema = z
+  .object({
+    name: z.string().min(1, 'Name is required'),
+    type: z.enum(['COUNTABLE', 'YES_NO']),
+    category: z.enum([
+      'HEALTH',
+      'FINANCE',
+      'CAREER',
+      'EDUCATION',
+      'PERSONAL',
+      'SOCIAL',
+      'CREATIVE',
+      'OTHER',
+    ]),
+    frequency: z.enum([
+      'ONE_TIME',
+      'DAILY',
+      'WEEKLY',
+      'MONTHLY',
+      'ANNUAL',
+      'CUSTOM',
+    ]),
+    cycleLength: z
+      .number()
+      .nullable()
+      .refine(
+        val => {
+          if (val === null) return true
+          return val >= 1
+        },
+        {
+          message: 'Cycle length must be at least 1',
+        },
+      ),
+    cycleUnit: z.enum(['days', 'weeks', 'months']).optional(),
+    startDate: z.string().min(1, 'Start date is required'),
+    targetValue: z.number().nullable(),
+    isReverse: z.boolean().default(false),
+    endDate: z.string().optional(),
+  })
+  .refine(
+    data => {
+      // If frequency is CUSTOM, both cycleLength and cycleUnit are required
+      if (data.frequency === 'CUSTOM') {
+        return data.cycleLength != null && data.cycleUnit != null
+      }
+      return true
+    },
+    {
+      message: 'Cycle length and unit are required for custom frequency',
+      path: ['cycleLength'], // Show error on cycleLength field
+    },
+  )
 
 type CreateGoalFormData = z.infer<typeof createGoalSchema>
 
@@ -52,7 +105,7 @@ function NumberInput({
   value,
   onChange,
   placeholder,
-  allowNull = false
+  allowNull = false,
 }: {
   value: number | undefined | null
   onChange: (value: number | undefined | null) => void
@@ -77,7 +130,7 @@ function NumberInput({
           value={value == null ? '' : value}
           onChange={e => {
             const val = e.target.value
-            onChange(val ? parseInt(val) : (allowNull ? null : undefined))
+            onChange(val ? parseInt(val) : allowNull ? null : undefined)
           }}
           className='rounded-none text-center text-sm'
         />
@@ -95,7 +148,13 @@ function NumberInput({
   )
 }
 
-function UpdateGoalDialog({ goal, onClose }: { goal: GoalWithProgress; onClose: () => void }) {
+function UpdateGoalDialog({
+  goal,
+  onClose,
+}: {
+  goal: GoalWithProgress
+  onClose: () => void
+}) {
   const form = useForm({
     defaultValues: {
       value: goal.progress[0]?.value || 0,
@@ -119,7 +178,9 @@ function UpdateGoalDialog({ goal, onClose }: { goal: GoalWithProgress; onClose: 
     <Dialog open onOpenChange={onClose}>
       <DialogContent className='max-w-sm rounded-none border-2 p-6'>
         <DialogHeader>
-          <DialogTitle className='text-lg font-normal tracking-tight'>{goal.name}</DialogTitle>
+          <DialogTitle className='text-lg font-normal tracking-tight'>
+            {goal.name}
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
@@ -160,7 +221,11 @@ function UpdateGoalDialog({ goal, onClose }: { goal: GoalWithProgress; onClose: 
                 </FormItem>
               )}
             />
-            <Button type='submit' className='w-full rounded-none border-foreground text-xs' variant='outline'>
+            <Button
+              type='submit'
+              className='w-full rounded-none border-foreground text-xs'
+              variant='outline'
+            >
               update
             </Button>
           </form>
@@ -193,7 +258,10 @@ function CreateGoalDialog() {
         type: data.type,
         category: data.category,
         frequency: data.frequency,
-        cycleLength: data.frequency === 'CUSTOM' && data.cycleLength ? data.cycleLength : undefined,
+        cycleLength:
+          data.frequency === 'CUSTOM' && data.cycleLength
+            ? data.cycleLength
+            : undefined,
         cycleUnit: data.frequency === 'CUSTOM' ? data.cycleUnit : undefined,
         startDate: new Date(data.startDate),
         targetValue: data.targetValue,
@@ -220,7 +288,9 @@ function CreateGoalDialog() {
       </DialogTrigger>
       <DialogContent className='max-w-sm rounded-none border-2 p-6'>
         <DialogHeader>
-          <DialogTitle className='text-lg font-normal tracking-tight'>new goal</DialogTitle>
+          <DialogTitle className='text-lg font-normal tracking-tight'>
+            new goal
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
@@ -240,7 +310,8 @@ function CreateGoalDialog() {
                     />
                   </FormControl>
                   <FormDescription className='text-xs'>
-                    e.g. &ldquo;Go outside for 30 min&rdquo; or &ldquo;Read 12 books&rdquo;
+                    e.g. &ldquo;Go outside for 30 min&rdquo; or &ldquo;Read 12
+                    books&rdquo;
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -253,7 +324,10 @@ function CreateGoalDialog() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-xs'>Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger className='rounded-none text-sm'>
                           <SelectValue placeholder='Select goal type' />
@@ -284,7 +358,10 @@ function CreateGoalDialog() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-xs'>Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger className='rounded-none text-sm'>
                           <SelectValue placeholder='Select category' />
@@ -311,7 +388,10 @@ function CreateGoalDialog() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-xs'>Frequency</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger className='rounded-none text-sm'>
                           <SelectValue placeholder='Select frequency' />
@@ -372,7 +452,10 @@ function CreateGoalDialog() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className='text-xs'>Cycle Unit</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value || undefined}
+                        >
                           <FormControl>
                             <SelectTrigger className='rounded-none text-sm'>
                               <SelectValue placeholder='Select unit' />
@@ -477,7 +560,11 @@ function CreateGoalDialog() {
                 </FormItem>
               )}
             />
-            <Button type='submit' className='w-full rounded-none border-foreground text-xs' variant='outline'>
+            <Button
+              type='submit'
+              className='w-full rounded-none border-foreground text-xs'
+              variant='outline'
+            >
               create
             </Button>
           </form>
@@ -515,13 +602,13 @@ function ProgressIndicator({ goal }: { goal: GoalWithProgress }) {
   if (goal.type === 'YES_NO') {
     return (
       <div
-        className={'h-2 w-2 rounded-full transition-colors ' +
+        className={
+          'h-2 w-2 rounded-full transition-colors ' +
           (!goal.progress.length
             ? 'bg-muted'
             : goal.progress[0].value > 0
               ? 'bg-success'
-              : 'bg-destructive'
-          )
+              : 'bg-destructive')
         }
       />
     )
@@ -530,13 +617,18 @@ function ProgressIndicator({ goal }: { goal: GoalWithProgress }) {
   const targetValue = goal.targetValue || 0
 
   // Calculate progress differently for reverse goals
-  const progress = targetValue > 0
-    ? goal.isReverse
-      ? currentValue > targetValue
-        ? Math.max(10 - Math.floor(((currentValue - targetValue) / targetValue) * 10), 0)
-        : 10
-      : Math.min(Math.floor((currentValue / targetValue) * 10), 10)
-    : 0
+  const progress =
+    targetValue > 0
+      ? goal.isReverse
+        ? currentValue > targetValue
+          ? Math.max(
+              10 -
+                Math.floor(((currentValue - targetValue) / targetValue) * 10),
+              0,
+            )
+          : 10
+        : Math.min(Math.floor((currentValue / targetValue) * 10), 10)
+      : 0
 
   // Determine color based on progress and goal type
   const getProgressColor = () => {
@@ -561,11 +653,9 @@ function ProgressIndicator({ goal }: { goal: GoalWithProgress }) {
       {[...Array(10)].map((_, i) => (
         <div
           key={i}
-          className={'h-2 w-2 rounded-full transition-colors ' +
-            (i < progress
-              ? getProgressColor()
-              : 'bg-muted'
-            )
+          className={
+            'h-2 w-2 rounded-full transition-colors ' +
+            (i < progress ? getProgressColor() : 'bg-muted')
           }
         />
       ))}
@@ -573,7 +663,13 @@ function ProgressIndicator({ goal }: { goal: GoalWithProgress }) {
   )
 }
 
-function DeleteConfirmDialog({ goal, onClose }: { goal: GoalWithProgress; onClose: () => void }) {
+function DeleteConfirmDialog({
+  goal,
+  onClose,
+}: {
+  goal: GoalWithProgress
+  onClose: () => void
+}) {
   const handleDelete = async () => {
     try {
       await deleteGoal({ id: goal.id })
@@ -587,10 +683,14 @@ function DeleteConfirmDialog({ goal, onClose }: { goal: GoalWithProgress; onClos
     <Dialog open onOpenChange={onClose}>
       <DialogContent className='max-w-sm rounded-none border-2 p-6'>
         <DialogHeader>
-          <DialogTitle className='text-lg font-normal tracking-tight'>delete goal</DialogTitle>
+          <DialogTitle className='text-lg font-normal tracking-tight'>
+            delete goal
+          </DialogTitle>
         </DialogHeader>
         <div className='space-y-4 pt-4'>
-          <p className='text-sm'>Are you sure you want to delete &ldquo;{goal.name}&rdquo;?</p>
+          <p className='text-sm'>
+            Are you sure you want to delete &ldquo;{goal.name}&rdquo;?
+          </p>
           <div className='flex justify-end gap-2'>
             <Button
               type='button'
@@ -603,7 +703,7 @@ function DeleteConfirmDialog({ goal, onClose }: { goal: GoalWithProgress; onClos
             <Button
               type='button'
               variant='outline'
-              className='rounded-none border-destructive text-destructive px-3 text-xs hover:bg-destructive hover:text-destructive-foreground'
+              className='rounded-none border-destructive px-3 text-xs text-destructive hover:bg-destructive hover:text-destructive-foreground'
               onClick={handleDelete}
             >
               delete
@@ -658,13 +758,15 @@ function getCycleInfo(goal: GoalWithProgress) {
       nextCycleDate = addMonths(startDate, currentCycle * goal.cycleLength)
       break
     default:
-      nextCycleDate = new Date(startDate.getTime() + currentCycle * cycleDuration)
+      nextCycleDate = new Date(
+        startDate.getTime() + currentCycle * cycleDuration,
+      )
   }
 
   return {
     currentCycle,
     nextCycleDate,
-    cycleText: `Every ${goal.cycleLength} ${goal.cycleUnit}`
+    cycleText: `Every ${goal.cycleLength} ${goal.cycleUnit}`,
   }
 }
 
@@ -683,17 +785,27 @@ type FilterState = {
   categories: Set<string>
   type: 'ALL' | 'YES_NO' | 'COUNTABLE'
   status: 'ALL' | 'NEEDS_UPDATE' | 'COMPLETE' | 'INCOMPLETE'
-  frequency: 'ALL' | 'ONE_TIME' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'ANNUAL' | 'CUSTOM'
+  frequency:
+    | 'ALL'
+    | 'ONE_TIME'
+    | 'DAILY'
+    | 'WEEKLY'
+    | 'MONTHLY'
+    | 'ANNUAL'
+    | 'CUSTOM'
 }
 
-function Filters({ filters, onChange }: {
+function Filters({
+  filters,
+  onChange,
+}: {
   filters: FilterState
   onChange: (update: Partial<FilterState>) => void
 }) {
   return (
     <div className='flex flex-col gap-8'>
       {/* Categories */}
-      <div className='grid grid-cols-4 sm:flex sm:flex-wrap gap-x-8 gap-y-4 sm:gap-4'>
+      <div className='grid grid-cols-4 gap-x-8 gap-y-4 sm:flex sm:flex-wrap sm:gap-4'>
         {CATEGORIES.map(category => (
           <button
             key={category}
@@ -709,11 +821,19 @@ function Filters({ filters, onChange }: {
             className='group flex flex-col items-center gap-1.5'
           >
             <div
-              className={`h-3 w-3 rounded-full transition-transform ${getCategoryColor(category)} ${filters.categories.has(category) ? 'scale-125' : 'opacity-50 hover:opacity-75'
-                }`}
+              className={`h-3 w-3 rounded-full transition-transform ${getCategoryColor(category)} ${
+                filters.categories.has(category)
+                  ? 'scale-125'
+                  : 'opacity-50 hover:opacity-75'
+              }`}
             />
-            <span className={`text-xs transition-colors ${filters.categories.has(category) ? 'text-foreground' : 'text-muted-foreground'
-              }`}>
+            <span
+              className={`text-xs transition-colors ${
+                filters.categories.has(category)
+                  ? 'text-foreground'
+                  : 'text-muted-foreground'
+              }`}
+            >
               {category.toLowerCase()}
             </span>
           </button>
@@ -726,7 +846,10 @@ function Filters({ filters, onChange }: {
             className='group flex flex-col items-center gap-1.5'
           >
             <div className='flex h-3 w-3 items-center justify-center'>
-              <X weight='bold' className='h-3 w-3 text-muted-foreground transition-colors group-hover:text-foreground' />
+              <X
+                weight='bold'
+                className='h-3 w-3 text-muted-foreground transition-colors group-hover:text-foreground'
+              />
             </div>
             <span className='text-xs text-muted-foreground'>clear</span>
           </button>
@@ -738,8 +861,14 @@ function Filters({ filters, onChange }: {
 
 function needsAttention(goal: GoalWithProgress): boolean {
   const now = new Date()
-  const lastUpdate = goal.progress[0]?.date ? new Date(goal.progress[0].date) : null
-  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const lastUpdate = goal.progress[0]?.date
+    ? new Date(goal.progress[0].date)
+    : null
+  const startOfToday = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+  )
 
   // For daily goals, check if updated today
   if (goal.frequency === 'DAILY') {
@@ -764,7 +893,11 @@ function needsAttention(goal: GoalWithProgress): boolean {
   }
 
   // For annual goals with a target value (like reading 12 books)
-  if (goal.frequency === 'ANNUAL' && goal.type === 'COUNTABLE' && goal.targetValue) {
+  if (
+    goal.frequency === 'ANNUAL' &&
+    goal.type === 'COUNTABLE' &&
+    goal.targetValue
+  ) {
     const startDate = new Date(goal.startDate)
 
     // Calculate the end of the annual period (1 year from start)
@@ -798,13 +931,19 @@ function needsAttention(goal: GoalWithProgress): boolean {
     // Calculate cycle start based on unit
     switch (goal.cycleUnit) {
       case 'days':
-        currentCycleStart.setDate(currentCycleStart.getDate() - goal.cycleLength)
+        currentCycleStart.setDate(
+          currentCycleStart.getDate() - goal.cycleLength,
+        )
         break
       case 'weeks':
-        currentCycleStart.setDate(currentCycleStart.getDate() - (goal.cycleLength * 7))
+        currentCycleStart.setDate(
+          currentCycleStart.getDate() - goal.cycleLength * 7,
+        )
         break
       case 'months':
-        currentCycleStart.setMonth(currentCycleStart.getMonth() - goal.cycleLength)
+        currentCycleStart.setMonth(
+          currentCycleStart.getMonth() - goal.cycleLength,
+        )
         break
     }
 
@@ -826,13 +965,17 @@ function needsAttention(goal: GoalWithProgress): boolean {
 
 export function DashboardPage() {
   const { data: goals = [], isLoading } = useQuery(getGoals)
-  const [selectedGoal, setSelectedGoal] = useState<GoalWithProgress | null>(null)
-  const [goalToDelete, setGoalToDelete] = useState<GoalWithProgress | null>(null)
+  const [selectedGoal, setSelectedGoal] = useState<GoalWithProgress | null>(
+    null,
+  )
+  const [goalToDelete, setGoalToDelete] = useState<GoalWithProgress | null>(
+    null,
+  )
   const [filters, setFilters] = useState<FilterState>({
     categories: new Set(),
     type: 'ALL',
     status: 'ALL',
-    frequency: 'ALL'
+    frequency: 'ALL',
   })
 
   const goalsNeedingAttention = goals.filter(needsAttention)
@@ -851,9 +994,10 @@ export function DashboardPage() {
     if (filters.status !== 'ALL') {
       const hasProgress = goal.progress.length > 0
       const latestProgress = hasProgress ? goal.progress[0].value : 0
-      const isComplete = goal.type === 'YES_NO'
-        ? latestProgress > 0
-        : goal.targetValue != null && latestProgress >= goal.targetValue
+      const isComplete =
+        goal.type === 'YES_NO'
+          ? latestProgress > 0
+          : goal.targetValue != null && latestProgress >= goal.targetValue
 
       if (filters.status === 'NEEDS_UPDATE' && hasProgress) return false
       if (filters.status === 'COMPLETE' && !isComplete) return false
@@ -887,7 +1031,8 @@ export function DashboardPage() {
                 <div className='h-2 w-2 rounded-full bg-primary' />
                 <h2 className='text-sm font-medium'>today&apos;s focus</h2>
                 <span className='text-xs text-primary/80'>
-                  {goalsNeedingAttention.length} goal{goalsNeedingAttention.length === 1 ? '' : 's'} to check in on
+                  {goalsNeedingAttention.length} goal
+                  {goalsNeedingAttention.length === 1 ? '' : 's'} to check in on
                 </span>
               </div>
               <div className='space-y-2'>
@@ -897,7 +1042,9 @@ export function DashboardPage() {
                     className='flex items-center justify-between gap-4'
                   >
                     <div className='flex items-center gap-3'>
-                      <div className={`h-2 w-2 rounded-full ${getCategoryColor(goal.category)}`} />
+                      <div
+                        className={`h-2 w-2 rounded-full ${getCategoryColor(goal.category)}`}
+                      />
                       <span>{goal.name}</span>
                       {goal.type === 'COUNTABLE' && goal.targetValue && (
                         <span className='text-sm text-muted-foreground'>
@@ -936,21 +1083,27 @@ export function DashboardPage() {
         >
           {/* Group goals by category */}
           {CATEGORIES.map(category => {
-            const categoryGoals = filteredGoals.filter(g => g.category === category)
+            const categoryGoals = filteredGoals.filter(
+              g => g.category === category,
+            )
             if (categoryGoals.length === 0) return null
 
             return (
               <div key={category} className='space-y-3'>
                 <div className='flex items-center gap-2'>
-                  <div className={`h-4 w-4 rounded ${getCategoryColor(category)}`} />
-                  <h2 className='text-2xl font-medium'>{category.toLowerCase()}</h2>
+                  <div
+                    className={`h-4 w-4 rounded ${getCategoryColor(category)}`}
+                  />
+                  <h2 className='text-2xl font-medium'>
+                    {category.toLowerCase()}
+                  </h2>
                 </div>
                 <div className='space-y-2'>
                   {categoryGoals.map(goal => (
                     <motion.div
                       key={goal.id}
                       variants={fadeIn}
-                      className='group flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-3 border-b border-border/40'
+                      className='group flex flex-col justify-between gap-4 border-b border-border/40 py-3 sm:flex-row sm:items-center'
                     >
                       <div className='flex-1 space-y-2 sm:space-y-1'>
                         <div className='flex items-center justify-between'>
@@ -977,7 +1130,8 @@ export function DashboardPage() {
                         {goal.type === 'COUNTABLE' && goal.targetValue && (
                           <div className='flex items-center gap-2'>
                             <span className='text-sm text-muted-foreground'>
-                              {goal.progress[0]?.value || 0} / {goal.targetValue}
+                              {goal.progress[0]?.value || 0} /{' '}
+                              {goal.targetValue}
                             </span>
                             <ProgressIndicator goal={goal} />
                           </div>
@@ -997,14 +1151,22 @@ export function DashboardPage() {
                                   <>
                                     <span>Cycle {cycleInfo.currentCycle}</span>
                                     <span>•</span>
-                                    <span>Next: {formatDistanceToNow(cycleInfo.nextCycleDate, { addSuffix: true })}</span>
+                                    <span>
+                                      Next:{' '}
+                                      {formatDistanceToNow(
+                                        cycleInfo.nextCycleDate,
+                                        { addSuffix: true },
+                                      )}
+                                    </span>
                                   </>
                                 )
                               })()}
                             </>
                           ) : (
                             <>
-                              <span>{goal.frequency.toLowerCase().replace('_', ' ')}</span>
+                              <span>
+                                {goal.frequency.toLowerCase().replace('_', ' ')}
+                              </span>
                               <span>•</span>
                               <span>
                                 {(() => {
@@ -1020,11 +1182,18 @@ export function DashboardPage() {
                                     case 'WEEKLY':
                                       nextReset = new Date(now)
                                       // Get to next Sunday
-                                      nextReset.setDate(nextReset.getDate() + (7 - nextReset.getDay()))
+                                      nextReset.setDate(
+                                        nextReset.getDate() +
+                                          (7 - nextReset.getDay()),
+                                      )
                                       nextReset.setHours(0, 0, 0, 0)
                                       break
                                     case 'MONTHLY':
-                                      nextReset = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+                                      nextReset = new Date(
+                                        now.getFullYear(),
+                                        now.getMonth() + 1,
+                                        1,
+                                      )
                                       break
                                     case 'ANNUAL':
                                       const startDate = new Date(goal.startDate)
@@ -1033,7 +1202,9 @@ export function DashboardPage() {
                                       nextReset.setFullYear(now.getFullYear())
                                       // If we're past this year's anniversary, set to next year
                                       if (now > nextReset) {
-                                        nextReset.setFullYear(now.getFullYear() + 1)
+                                        nextReset.setFullYear(
+                                          now.getFullYear() + 1,
+                                        )
                                       }
                                       break
                                     default:
@@ -1047,7 +1218,7 @@ export function DashboardPage() {
                         </div>
                       </div>
                       {/* Desktop actions */}
-                      <div className='hidden sm:flex items-center justify-end gap-6'>
+                      <div className='hidden items-center justify-end gap-6 sm:flex'>
                         <div className='flex gap-1 opacity-0 transition-opacity group-hover:opacity-100'>
                           <Button
                             size='sm'
@@ -1060,7 +1231,7 @@ export function DashboardPage() {
                           <Button
                             size='sm'
                             variant='outline'
-                            className='h-7 rounded-none border-destructive text-destructive px-3 text-xs hover:bg-destructive hover:text-destructive-foreground'
+                            className='h-7 rounded-none border-destructive px-3 text-xs text-destructive hover:bg-destructive hover:text-destructive-foreground'
                             onClick={() => setGoalToDelete(goal)}
                           >
                             <Trash className='h-3 w-3' />
@@ -1091,4 +1262,4 @@ export function DashboardPage() {
       )}
     </div>
   )
-} 
+}
