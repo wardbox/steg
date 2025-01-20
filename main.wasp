@@ -1,4 +1,4 @@
-app roke {
+app steg {
   wasp: {
     version: "^0.15.1"
   },
@@ -6,26 +6,26 @@ app roke {
   head: [
     "<meta name='description' content='A minimal, clean goal tracking app focused on daily progress and habit formation.'>",
     
-    "<meta property='og:url' content='https://steg.app'>",
+    "<meta property='og:url' content='https://getsteg.app'>",
     "<meta property='og:type' content='website'>",
     "<meta property='og:title' content='steg - minimal goal tracking'>",
     "<meta property='og:description' content='A minimal, clean goal tracking app focused on daily progress and habit formation.'>",
-    "<meta property='og:image' content='https://steg.app/og.png'>",
+    "<meta property='og:image' content='https://getsteg.app/og.svg'>",
     
     "<meta name='twitter:card' content='summary_large_image'>",
-    "<meta property='twitter:domain' content='steg.app'>",
-    "<meta property='twitter:url' content='https://steg.app'>",
+    "<meta property='twitter:domain' content='getsteg.app'>",
+    "<meta property='twitter:url' content='https://getsteg.app'>",
     "<meta name='twitter:title' content='steg - minimal goal tracking'>",
     "<meta name='twitter:description' content='A minimal, clean goal tracking app focused on daily progress and habit formation.'>",
-    "<meta name='twitter:image' content='https://steg.app/og.png'>"
+    "<meta name='twitter:image' content='https://getsteg.app/og.svg'>"
   ],
   auth: {
     userEntity: User,
     methods: {
       email: {
         fromField: {
-          name: "example.com",
-          email: "wizard@example.com"
+          name: "steg",
+          email: "hello@getsteg.app"
         },
         emailVerification: {
           clientRoute: EmailVerificationRoute,
@@ -38,7 +38,7 @@ app roke {
         userSignupFields: import { getEmailUserFields } from "@src/auth/user-signup-fields",
       }
     },
-    onAuthSucceededRedirectTo: "/note-example",
+    onAuthSucceededRedirectTo: "/dashboard",
     onAuthFailedRedirectTo: "/login"
   },
   client: {
@@ -46,7 +46,7 @@ app roke {
     setupFn: import setupClient from "@src/lib/setup"
   },
   emailSender: {
-    provider: Dummy,
+    provider: Mailgun,
   }
 }
 
